@@ -29,6 +29,7 @@ methods.getLetterDay = function(){
             throw err
 
         console.log('results',result)
+        return result
     })
 }
 
