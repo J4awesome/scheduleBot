@@ -5,8 +5,7 @@ var totalNumbers = 0
 var letterDay = "A"
 
 var scheduleHelper = require('./Models/schedule.js')
-scheduleHelper.getLetterDay()
-
+scheduleHelper.data.getLetterDay()
 
 app.get('/', function(req,res) {
     res.send('test')

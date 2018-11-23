@@ -1,42 +1,32 @@
 //schedule.js 
 //helper file for download letter day, returning data, and getting users schedules 
 var request = require('request')
-var mongoClient =  require('mongodb').MongoClient
+var mongoose =  require('mongoose')
 var moment = require('moment')
 var url = "mongodb://127.0.0.1:27017/scheduleBot"
 var methods = {}
+var Schema = mongoose.Schema
 
-mongoClient.connect(url, function(err,db) {
-    if (err)
-        throw err
-    var dbo = db.db('scheduleBot')
-    dbo.createCollection("letterDays", function(err,res) {
-        if (err)
-            throw err
-        console.log('Collection Created')
-    })
-    dbo.createCollection('users', function(err,res) {
-        if (err)
-            throw err
-        console.log("Collection Created")
-        db.close();
-    })
+var letterDay = new Schema({
+    letterDay:String,
+    day:Number
 })
 
+var userSchedule = new Schema()
+
+mongoose.connect(url)
+
+
 methods.getLetterDay = function(){
-    mongoClient.connect(url, function(err,db) {
+    
+    var date = moment().format('Do')
+    var newDate = date.slice(0,-2)
+    console.log('Current Day',newDate)
+    letterDay.find({day:newDate}, function(err, result) {
         if (err)
             throw err
-        var dbo = db.db('scheduleBot')
-        var date = moment().format('Do')
-        date.slice(-2)
-        console.log('Current Day',date)
-        dbo.collection('letterDays').findOne({ day:date }, function(err, result) {
-            if (err)
-                throw err
-            console.log('Letter day recived',result)
-            return result
-        })
+
+        console.log(result)
     })
 }
 
