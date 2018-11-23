@@ -12,14 +12,26 @@ var letterDay = new Schema({
     day:Number
 })
 
+var user = new Schema({
+    phoneNumber:String,
+    ADay:[],
+    BDay:[],
+    CDay:[],
+    DDay:[],
+    EDay:[],
+    FDay:[],
+    GDay:[]
+})
+
 var LetterDay = mongoose.model('LetterDay', letterDay)
+var User = mongoose.model('Users',user)
 
 var userSchedule = new Schema()
 
 mongoose.connect(url)
 
 
-methods.getLetterDay = function(){
+methods.getLetterDay = function(callback){
     
     var date = moment().format('Do')
     var newDate = date.slice(0,-2)
@@ -29,20 +41,36 @@ methods.getLetterDay = function(){
             throw err
 
         console.log('results',result)
-        return result
+        return callback(result)
     })
 }
 
-methods.getUserSchedule = function() {
-
+methods.getUserSchedule = function(userPhoneNumber,Letterday) {
+    User.find({phoneNumber:userPhoneNumber}, function(err,results) {
+        if (err)
+            throw err
+        console.log('results', results)
+        const newLetterDay = LetterDay + "Day"
+        console.log('day based on schedule', results[newLetterDay])
+    })
 }
 
 methods.createLetterDays = function() {
-    var newDay = LetterDay({letterDay:'f',day:27})
+    var newDay = LetterDay({ letterday:'F', day:23})
     newDay.save(function(err){
         if(err) 
             throw err
         console.log('created letterday')    
+    })
+}
+
+methods.createUser = function(phoneNumber, schedule) {
+    var newUser = User({phoneNumber:phoneNumber, ADay:schedule[0],BDay:schedule[1],CDay:schedule[2],DDay:schedule[3],EDay:schedule[4],FDay:schedule[5],GDay:schedule[6]})
+    newUser.save(function(err) {
+        if (err)
+            throw err
+
+        console.log('created user')
     })
 }
 
