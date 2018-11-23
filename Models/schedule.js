@@ -8,9 +8,11 @@ var methods = {}
 var Schema = mongoose.Schema
 
 var letterDay = new Schema({
-    letterDay:String,
+    letterday:String,
     day:Number
 })
+
+var LetterDay = mongoose.model('LetterDay', letterDay)
 
 var userSchedule = new Schema()
 
@@ -21,17 +23,26 @@ methods.getLetterDay = function(){
     
     var date = moment().format('Do')
     var newDate = date.slice(0,-2)
-    console.log('Current Day',newDate)
-    letterDay.find({day:newDate}, function(err, result) {
+    console.log(' Current Day',newDate)
+    LetterDay.find({day:newDate}, function(err, result) {
         if (err)
             throw err
 
-        console.log(result)
+        console.log('results',result)
     })
 }
 
 methods.getUserSchedule = function() {
 
+}
+
+methods.createLetterDays = function() {
+    var newDay = LetterDay({letterDay:'f',day:27})
+    newDay.save(function(err){
+        if(err) 
+            throw err
+        console.log('created letterday')    
+    })
 }
 
 methods.removeUserfromDB = function(user) {
