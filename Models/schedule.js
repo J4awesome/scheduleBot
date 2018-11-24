@@ -28,19 +28,18 @@ var User = mongoose.model('Users',user)
 
 var userSchedule = new Schema()
 
-mongoose.connect(url)
+mongoose.connect(url, { useNewUrlParser:true })
 
 
 methods.getLetterDay = function(callback){
     
     var date = moment().format('Do')
     var newDate = date.slice(0,-2)
-    console.log(' Current Day',newDate)
+    console.log('Current Day',newDate)
     LetterDay.find({day:newDate}, function(err, result) {
         if (err)
             throw err
 
-        console.log('results',result)
         return callback(result)
     })
 }
@@ -49,9 +48,9 @@ methods.getUserSchedule = function(userPhoneNumber,Letterday) {
     User.find({phoneNumber:userPhoneNumber}, function(err,results) {
         if (err)
             throw err
-        console.log('results', results)
-        const newLetterDay = LetterDay + "Day"
-        console.log('day based on schedule', results[newLetterDay])
+        var newLetterDay = Letterday + "Day"
+        console.log(results[0][newLetterDay])
+        return results[newLetterDay]
     })
 }
 
@@ -66,6 +65,7 @@ methods.createLetterDays = function() {
 
 methods.createUser = function(phoneNumber, schedule) {
     var newUser = User({phoneNumber:phoneNumber, ADay:schedule[0],BDay:schedule[1],CDay:schedule[2],DDay:schedule[3],EDay:schedule[4],FDay:schedule[5],GDay:schedule[6]})
+    console.log(newUser)
     newUser.save(function(err) {
         if (err)
             throw err
