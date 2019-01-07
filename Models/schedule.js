@@ -53,7 +53,7 @@ methods.getLetterDay = function(callback){
     var date = moment().format('Do')
     var newDate = date.slice(0,-2)
     console.log('Current Day',newDate)
-    LetterDay.find({day:7}, function(err, result) {
+    LetterDay.find({day:newDate}, function(err, result) {
         if (err) {
             console.log(err)
         } else {
@@ -64,8 +64,10 @@ methods.getLetterDay = function(callback){
 
 methods.getUserSchedule = function(userPhoneNumber,Letterday) {
     User.find({phoneNumber:userPhoneNumber}, function(err,results) {
-        if (err)
+        if (err) {
             console.log(err)
+        }
+
         var newLetterDay = Letterday + "Day"
         console.log(results[0][newLetterDay])
         return results[newLetterDay]

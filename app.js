@@ -9,7 +9,7 @@ var letterDay = ""
 
 
 scheduleHelper.data.getLetterDay(function(data) { //get letter day based on day of week
-    if (data[0].letterDay == undefined) {
+    if (data[0].letterday == undefined) {
 
     } else {
         letterDay = data[0].letterday
