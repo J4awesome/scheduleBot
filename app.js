@@ -13,7 +13,7 @@ scheduleHelper.data.getLetterDay(function(data) { //get letter day based on day 
 
     } else {
         letterDay = data[0].letterday
-        scheduleHelper.data.getUserSchedule('7328044377',letterDay) //random data used for testing api
+        //scheduleHelper.data.getUserSchedule('7328044377',letterDay) //random data used for testing api
         console.log('Letterday',data[0].letterday)
     }
 })

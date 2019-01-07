@@ -34,17 +34,15 @@ mongoose.connect(url, { useNewUrlParser:true })
 
 methods.updateSchedule = function() {
      
-    var event = cron.scheduleJob({hour:5, minute:30, dayOfWeek:[1,2,3,4,5]}, function() { //send sms to every avaliable client 
+    var event = cron.scheduleJob({hour:15, minute:45, dayOfWeek:[1,2,3,4,5]}, function() { //send sms to every avaliable client 
         //first update letterday
-        var letterDay = ""
         methods.getLetterDay(function(result) {
-            console.log(result)
-            letterDay = result
+            console.log('sending sms to clients')
+            methods.getUserSchedule('7328044377',result[0].letterday, function(results) {
+                console.log('test',results)
+                texthelper.data.sendSMS('+17328044377',results)
+            })
         })
-        console.log(letterDay)
-        console.log('sending sms to clients')
-        var userSchedule = methods.getUserSchedule('7328044377',letterDay)
-        texthelper.data.sendSMS(userSchedule)
     })
 }
 
@@ -62,15 +60,15 @@ methods.getLetterDay = function(callback){
     })
 }
 
-methods.getUserSchedule = function(userPhoneNumber,Letterday) {
+methods.getUserSchedule = function(userPhoneNumber,Letterday,callback) {
+    
     User.find({phoneNumber:userPhoneNumber}, function(err,results) {
         if (err) {
             console.log(err)
         }
-
         var newLetterDay = Letterday + "Day"
-        console.log(results[0][newLetterDay])
-        return results[newLetterDay]
+        var dict = results[0]
+        callback(dict[newLetterDay])
     })
 }
 
